@@ -3,41 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Studio Ghibli App</title>
+  <title>Studio Ghibli API</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 <body>
   <header>
-    <div class="top-bar">
-      <h1>Studio Ghibli Explorer</h1>
-      <button id="menu-toggle" class="hamburger">&#9776;</button>
-    </div>
+    <h1>Studio Ghibli</h1>
+    <button id="menu-toggle">☰</button>
     <nav id="nav-menu" class="hidden">
       <button onclick="loadData('films')">Películas</button>
       <button onclick="loadData('people')">Personajes</button>
       <button onclick="loadData('species')">Especies</button>
-      <button onclick="loadData('locations')">Localizaciones</button>
+      <button onclick="loadData('locations')">Lugares</button>
       <button onclick="loadData('vehicles')">Vehículos</button>
       <button onclick="showFavorites()">Favoritos</button>
     </nav>
   </header>
 
-  <section id="content"></section>
+  <main>
+    <input type="text" id="search-input" placeholder="Buscar..." />
+    <div id="content"></div>
+  </main>
 
-  <footer class="menu">
-    <button onclick="showTab('home')">Home</button>
-    <button onclick="showTab('register')">Registro</button>
-    <button onclick="showTab('trivia')">Trivia</button>
-    <button onclick="showTab('films')">Películas</button>
-  </footer>
-
-  <!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-<!-- Scripts de tu app -->
-<script src="firebase.js"></script>
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
