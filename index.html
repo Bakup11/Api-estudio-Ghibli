@@ -8,18 +8,19 @@
 </head>
 <body>
   <header>
-    <h1>Studio Ghibli Explorer</h1>
-    <input type="text" id="searchInput" placeholder="Buscar..." />
+    <div class="top-bar">
+      <h1>Studio Ghibli Explorer</h1>
+      <button id="menu-toggle" class="hamburger">&#9776;</button>
+    </div>
+    <nav id="nav-menu" class="hidden">
+      <button onclick="loadData('films')">Películas</button>
+      <button onclick="loadData('people')">Personajes</button>
+      <button onclick="loadData('species')">Especies</button>
+      <button onclick="loadData('locations')">Localizaciones</button>
+      <button onclick="loadData('vehicles')">Vehículos</button>
+      <button onclick="showFavorites()">Favoritos</button>
+    </nav>
   </header>
-
-  <nav class="tabs">
-    <button onclick="showTab('films')">Películas</button>
-    <button onclick="showTab('characters')">Personajes</button>
-    <button onclick="showTab('species')">Especies</button>
-    <button onclick="showTab('locations')">Localizaciones</button>
-    <button onclick="showTab('vehicles')">Vehículos</button>
-    <button onclick="showTab('favorites')">Favoritos</button>
-  </nav>
 
   <section id="content"></section>
 

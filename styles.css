@@ -116,3 +116,63 @@ nav button:hover {
     text-align: center;
   }
 }
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  color: white;
+  padding: 10px 15px;
+}
+
+.hamburger {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: none; /* visible solo en móviles */
+}
+
+#nav-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-bottom: 3px solid #5b5b5b;
+}
+
+#nav-menu button {
+  margin: 5px;
+  padding: 8px 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  background-color: white;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+#nav-menu button:hover {
+  background-color: #ddd;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .hamburger {
+    display: block;
+  }
+
+  #nav-menu {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #nav-menu button {
+    width: 100%;
+  }
+}

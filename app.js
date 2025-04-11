@@ -145,3 +145,57 @@ searchInput.addEventListener("input", () => {
 
 showTab("home");
 
+// Menú hamburguesa
+document.getElementById("menu-toggle").addEventListener("click", function () {
+  document.getElementById("nav-menu").classList.toggle("hidden");
+});
+
+// Mostrar favoritos con opción de eliminar
+function showFavorites() {
+  const content = document.getElementById("content");
+  content.innerHTML = "<h2>Favoritos</h2>";
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+  if (favorites.length === 0) {
+    content.innerHTML += "<p>No hay elementos favoritos.</p>";
+    return;
+  }
+
+  const container = document.createElement("div");
+  container.id = "favorites-container";
+  container.style.display = "grid";
+  container.style.gridTemplateColumns = "repeat(auto-fit, minmax(220px, 1fr))";
+  container.style.gap = "20px";
+  container.style.padding = "20px";
+
+  favorites.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${item.title || item.name}</h3>
+      ${item.image ? `<img src="${item.image}" alt="${item.title || item.name}" class="ghibli-image">` : ""}
+      <button class="remove-fav" data-id="${item.id}">❌ Quitar</button>
+    `;
+    container.appendChild(card);
+  });
+
+  content.appendChild(container);
+
+  document.querySelectorAll(".remove-fav").forEach(button => {
+    button.addEventListener("click", function () {
+      const id = this.getAttribute("data-id");
+      let updatedFavorites = favorites.filter(fav => fav.id !== id);
+      localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+      showFavorites();
+    });
+  });
+}
+const menuToggle = document.getElementById("menu-toggle");
+
+if (menuToggle) {
+  menuToggle.addEventListener("click", function () {
+    document.getElementById("nav-menu").classList.toggle("hidden");
+  });
+} else {
+  console.warn("Botón de menú hamburguesa no encontrado en el DOM");
+}
