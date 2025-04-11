@@ -12,6 +12,49 @@ window.addEventListener("DOMContentLoaded", () => {
   const content = document.getElementById("content");
   const proxy = "https://api.allorigins.win/raw?url=";
 
+  // Función de navegación
+  window.navigateTo = function(section) {
+    console.log("Navegando a:", section);
+    
+    // Ocultar todas las secciones
+    document.getElementById("home-section").classList.add("hidden");
+    document.getElementById("trivia-section").classList.add("hidden");
+    document.getElementById("registration-section").classList.add("hidden");
+    
+    // Quitar clase activa de todos los elementos de navegación
+    document.querySelectorAll(".bottom-nav-item").forEach(item => {
+      item.classList.remove("active");
+    });
+    
+    // Mostrar la sección seleccionada y activar el elemento de navegación
+    switch(section) {
+      case "home":
+        document.getElementById("home-section").classList.remove("hidden");
+        document.getElementById("nav-home").classList.add("active");
+        if (allData.films.length === 0) {
+          loadData("films");
+        }
+        break;
+      case "films":
+        document.getElementById("home-section").classList.remove("hidden");
+        document.getElementById("nav-films").classList.add("active");
+        loadData("films");
+        break;
+      case "trivia":
+        document.getElementById("trivia-section").classList.remove("hidden");
+        document.getElementById("nav-trivia").classList.add("active");
+        // Iniciar o reanudar trivia
+        if (typeof initTrivia === 'function') {
+          initTrivia();
+        }
+        break;
+      case "register":
+        document.getElementById("registration-section").classList.remove("hidden");
+        document.getElementById("nav-register").classList.add("active");
+        break;
+    }
+  };
+
   window.loadData = async function(endpoint) {
     currentTab = endpoint;
     const url = `${proxy}https://ghibliapi.vercel.app/${endpoint}`;
@@ -24,6 +67,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
       allData[endpoint] = data;
       renderList(data, endpoint);
+      
+      // Mostrar sección de contenido al cargar datos
+      document.getElementById("home-section").classList.remove("hidden");
+      document.getElementById("trivia-section").classList.add("hidden");
+      document.getElementById("registration-section").classList.add("hidden");
     } catch (error) {
       console.error("Error al cargar datos:", error.message);
       content.innerHTML = `<p style="color: red;">Error al cargar los datos: ${error.message}</p>`;
@@ -66,6 +114,10 @@ window.addEventListener("DOMContentLoaded", () => {
   window.showFavorites = function() {
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
     content.innerHTML = "";
+
+    document.getElementById("home-section").classList.remove("hidden");
+    document.getElementById("trivia-section").classList.add("hidden");
+    document.getElementById("registration-section").classList.add("hidden");
 
     if (favoritos.length === 0) {
       content.innerHTML = "<p>No tienes favoritos aún.</p>";
@@ -129,5 +181,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  loadData("films");
+  // Comenzar con la sección de inicio
+  navigateTo("home");
 });

@@ -22,10 +22,81 @@
   </header>
 
   <main>
-    <input type="text" id="search-input" placeholder="Buscar..." />
-    <div id="content"></div>
+    <section id="home-section">
+      <input type="text" id="search-input" placeholder="Buscar..." />
+      <div id="content"></div>
+    </section>
+    
+    <!-- Trivia Section -->
+    <section id="trivia-section" class="hidden">
+      <div class="trivia-container">
+        <h2>Trivia de Studio Ghibli</h2>
+        <div id="trivia-question"></div>
+        <div id="trivia-options"></div>
+        <div id="trivia-result"></div>
+        <button id="next-question" class="hidden">Siguiente Pregunta</button>
+        <div id="trivia-score">Puntuación: 0</div>
+      </div>
+    </section>
+    
+    <!-- Registration Section -->
+    <section id="registration-section" class="hidden">
+      <div class="registration-container">
+        <h2>Registro de Usuario</h2>
+        <form id="registration-form">
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" required>
+          </div>
+          <button type="submit">Registrarse</button>
+        </form>
+        <div id="login-section">
+          <h3>¿Ya tienes cuenta?</h3>
+          <form id="login-form">
+            <div class="form-group">
+              <label for="login-email">Email:</label>
+              <input type="email" id="login-email" required>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Contraseña:</label>
+              <input type="password" id="login-password" required>
+            </div>
+            <button type="submit">Iniciar Sesión</button>
+          </form>
+        </div>
+        <div id="auth-message"></div>
+      </div>
+    </section>
   </main>
 
+  <nav id="bottom-nav">
+    <button id="nav-home" class="bottom-nav-item active" onclick="navigateTo('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-text">Home</span>
+    </button>
+    <button id="nav-films" class="bottom-nav-item" onclick="navigateTo('films')">
+      <span class="nav-icon">🎬</span>
+      <span class="nav-text">Películas</span>
+    </button>
+    <button id="nav-trivia" class="bottom-nav-item" onclick="navigateTo('trivia')">
+      <span class="nav-icon">❓</span>
+      <span class="nav-text">Trivia</span>
+    </button>
+    <button id="nav-register" class="bottom-nav-item" onclick="navigateTo('register')">
+      <span class="nav-icon">👤</span>
+      <span class="nav-text">Registro</span>
+    </button>
+  </nav>
+
   <script src="app.js"></script>
+  <script src="trivia.js"></script>
+  <!-- Firebase SDK will be added later -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+  <script src="auth.js"></script> -->
 </body>
 </html>
