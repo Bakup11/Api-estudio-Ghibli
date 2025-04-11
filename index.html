@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Studio Ghibli App</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Studio Ghibli Explorer</h1>
+    <input type="text" id="searchInput" placeholder="Buscar..." />
+  </header>
+
+  <nav class="tabs">
+    <button onclick="showTab('films')">Películas</button>
+    <button onclick="showTab('characters')">Personajes</button>
+    <button onclick="showTab('species')">Especies</button>
+    <button onclick="showTab('locations')">Localizaciones</button>
+    <button onclick="showTab('vehicles')">Vehículos</button>
+    <button onclick="showTab('favorites')">Favoritos</button>
+  </nav>
+
+  <section id="content"></section>
+
+  <footer class="menu">
+    <button onclick="showTab('home')">Home</button>
+    <button onclick="showTab('register')">Registro</button>
+    <button onclick="showTab('trivia')">Trivia</button>
+    <button onclick="showTab('films')">Películas</button>
+  </footer>
+
+  <!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<!-- Scripts de tu app -->
+<script src="firebase.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

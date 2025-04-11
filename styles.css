@@ -1,0 +1,50 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  header {
+    background: #355c7d;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  header input {
+    width: 90%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  .tabs, .menu {
+    display: flex;
+    justify-content: space-around;
+    background: #6c5b7b;
+    padding: 0.5rem;
+  }
+  
+  .tabs button, .menu button {
+    flex: 1;
+    background: white;
+    border: none;
+    padding: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  #content {
+    padding: 1rem;
+  }
+  
+  .card {
+    background: white;
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
