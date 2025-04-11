@@ -38,7 +38,7 @@ function renderList(data, type) {
 
     div.innerHTML = `
       <strong>${title}</strong><br>
-      <img src="${image}" alt="${title}" style="max-width: 100%; height: auto; border-radius: 10px;" /><br>
+      <img src="${image}" alt="${title}" class="ghibli-image" /><br>
       <p>${description}</p>
       <button onclick="toggleFavorite('${type}', '${item.id}')">⭐ Favorito</button>
     `;
@@ -51,7 +51,6 @@ function getImage(type, item) {
     return item.image;
   }
 
-  // Imagenes de muestra por tipo
   const fallbackImages = {
     characters: "https://cdn-icons-png.flaticon.com/512/706/706830.png",
     species: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
@@ -132,7 +131,7 @@ function renderFavorites() {
         div.className = "card";
         div.innerHTML = `
           <strong>${item.title || item.name}</strong><br>
-          <img src="${getImage(type, item)}" alt="${item.title || item.name}" style="max-width: 100%; height: auto; border-radius: 10px;" />
+          <img src="${getImage(type, item)}" alt="${item.title || item.name}" class="ghibli-image" />
         `;
         content.appendChild(div);
       }
@@ -145,3 +144,4 @@ searchInput.addEventListener("input", () => {
 });
 
 showTab("home");
+
