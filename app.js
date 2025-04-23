@@ -11,8 +11,12 @@ window.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("search-input");
   const content = document.getElementById("content");
   const proxy = "https://api.allorigins.win/raw?url=";
+  fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error al cargar datos:', error));
 
-  // Función de navegación
+  // Función de navegación actualizada para incluir la sección de información
   window.navigateTo = function(section) {
     console.log("Navegando a:", section);
     
@@ -20,6 +24,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("home-section").classList.add("hidden");
     document.getElementById("trivia-section").classList.add("hidden");
     document.getElementById("registration-section").classList.add("hidden");
+    document.getElementById("info-section").classList.add("hidden");
     
     // Quitar clase activa de todos los elementos de navegación
     document.querySelectorAll(".bottom-nav-item").forEach(item => {
@@ -52,6 +57,10 @@ window.addEventListener("DOMContentLoaded", () => {
         document.getElementById("registration-section").classList.remove("hidden");
         document.getElementById("nav-register").classList.add("active");
         break;
+      case "info":
+        document.getElementById("info-section").classList.remove("hidden");
+        document.getElementById("nav-info").classList.add("active");
+        break;
     }
   };
 
@@ -72,6 +81,7 @@ window.addEventListener("DOMContentLoaded", () => {
       document.getElementById("home-section").classList.remove("hidden");
       document.getElementById("trivia-section").classList.add("hidden");
       document.getElementById("registration-section").classList.add("hidden");
+      document.getElementById("info-section").classList.add("hidden");
     } catch (error) {
       console.error("Error al cargar datos:", error.message);
       content.innerHTML = `<p style="color: red;">Error al cargar los datos: ${error.message}</p>`;
@@ -118,6 +128,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("home-section").classList.remove("hidden");
     document.getElementById("trivia-section").classList.add("hidden");
     document.getElementById("registration-section").classList.add("hidden");
+    document.getElementById("info-section").classList.add("hidden");
 
     if (favoritos.length === 0) {
       content.innerHTML = "<p>No tienes favoritos aún.</p>";
