@@ -1,5 +1,10 @@
+// Espera a que el DOM esté completamente cargado antes de ejecutar el script
 window.addEventListener("DOMContentLoaded", () => {
+
+  // Sección activa por defecto
   let currentTab = "films";
+
+  // Objeto para almacenar los datos cargados desde la API, por tipo
   let allData = {
     films: [],
     people: [],
@@ -8,30 +13,35 @@ window.addEventListener("DOMContentLoaded", () => {
     vehicles: []
   };
 
+  // Elementos del DOM para búsqueda y contenido
   const searchInput = document.getElementById("search-input");
   const content = document.getElementById("content");
-  const proxy = "https://api.allorigins.win/raw?url=";
-  fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error('Error al cargar datos:', error));
 
-  // Función de navegación actualizada para incluir la sección de información
+  // Proxy para evitar errores CORS
+  const proxy = "https://api.allorigins.win/raw?url=";
+
+  // Prueba inicial de llamada a la API (sólo para consola)
+  fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error al cargar datos:', error));
+
+  // Función para navegar entre secciones
   window.navigateTo = function(section) {
     console.log("Navegando a:", section);
-    
-    // Ocultar todas las secciones
+
+    // Oculta todas las secciones
     document.getElementById("home-section").classList.add("hidden");
     document.getElementById("trivia-section").classList.add("hidden");
     document.getElementById("registration-section").classList.add("hidden");
     document.getElementById("info-section").classList.add("hidden");
-    
-    // Quitar clase activa de todos los elementos de navegación
+
+    // Quita la clase 'active' de todos los botones del menú
     document.querySelectorAll(".bottom-nav-item").forEach(item => {
       item.classList.remove("active");
     });
-    
-    // Mostrar la sección seleccionada y activar el elemento de navegación
+
+    // Muestra la sección correspondiente y activa el botón del menú
     switch(section) {
       case "home":
         document.getElementById("home-section").classList.remove("hidden");
@@ -48,9 +58,8 @@ window.addEventListener("DOMContentLoaded", () => {
       case "trivia":
         document.getElementById("trivia-section").classList.remove("hidden");
         document.getElementById("nav-trivia").classList.add("active");
-        // Iniciar o reanudar trivia
         if (typeof initTrivia === 'function') {
-          initTrivia();
+          initTrivia(); // Llama a la trivia si está definida
         }
         break;
       case "register":
@@ -64,6 +73,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Carga los datos de una categoría específica desde la API
   window.loadData = async function(endpoint) {
     currentTab = endpoint;
     const url = `${proxy}https://ghibliapi.vercel.app/${endpoint}`;
@@ -74,10 +84,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (!Array.isArray(data)) throw new Error("Respuesta inválida");
 
-      allData[endpoint] = data;
-      renderList(data, endpoint);
-      
-      // Mostrar sección de contenido al cargar datos
+      allData[endpoint] = data; // Guarda los datos en memoria
+      renderList(data, endpoint); // Muestra los datos
+
+      // Asegura que solo la sección principal está visible
       document.getElementById("home-section").classList.remove("hidden");
       document.getElementById("trivia-section").classList.add("hidden");
       document.getElementById("registration-section").classList.add("hidden");
@@ -88,6 +98,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // Devuelve la imagen correspondiente a cada tipo de entidad
   function getImage(type, item) {
     switch (type) {
       case "films":
@@ -105,6 +116,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Renderiza una lista de ítems como tarjetas HTML
   function renderList(data, type) {
     content.innerHTML = "";
 
@@ -121,6 +133,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Muestra los favoritos guardados en localStorage
   window.showFavorites = function() {
     const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
     content.innerHTML = "";
@@ -148,6 +161,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  // Maneja clicks en los botones de favoritos dentro del contenedor
   content.addEventListener("click", (e) => {
     if (e.target.classList.contains("favorite-btn")) {
       const id = e.target.dataset.id;
@@ -171,6 +185,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Búsqueda en vivo dentro de la categoría actual
   if (searchInput) {
     searchInput.addEventListener("input", () => {
       const term = searchInput.value.toLowerCase();
@@ -182,6 +197,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Mostrar u ocultar el menú de navegación en móviles
   const toggleBtn = document.getElementById("menu-toggle");
   if (toggleBtn) {
     toggleBtn.addEventListener("click", () => {
@@ -192,6 +208,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Comenzar con la sección de inicio
+  // Carga la sección inicial al entrar
   navigateTo("home");
 });
