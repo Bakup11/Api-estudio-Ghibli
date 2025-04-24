@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Proxy para evitar errores CORS
   const proxy = "https://api.allorigins.win/raw?url=";
 
-  // Prueba inicial de llamada a la API (sólo para consola)
+  // Prueba inicial de llamada a la API (sólo para consola) para evitar errores de CORS
   fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
     .then(response => response.json())
     .then(data => console.log(data))
@@ -69,6 +69,7 @@ window.addEventListener("DOMContentLoaded", () => {
       case "info":
         document.getElementById("info-section").classList.remove("hidden");
         document.getElementById("nav-info").classList.add("active");
+        loadInfoSection();
         break;
     }
   };
@@ -97,6 +98,39 @@ window.addEventListener("DOMContentLoaded", () => {
       content.innerHTML = `<p style="color: red;">Error al cargar los datos: ${error.message}</p>`;
     }
   };
+
+  // Función para cargar la sección de información
+function loadInfoSection() {
+  const infoSection = document.getElementById("info-section");
+  
+  // Crear la estructura del contenido
+  const infoHTML = `
+    <div class="info-container">
+      <h2>Información</h2>
+      <div class="info-content">
+        <div class="api-info">
+          <h3>Studio Ghibli API</h3>
+          <div class="info-logo">
+            <img src="IMG/studio-ghibli-seeklogo.png" alt="Logo Studio Ghibli" class="ghibli-logo">
+          </div>
+          <div class="info-description">
+            <p>Esta aplicación utiliza la API de Studio Ghibli, que proporciona acceso a información sobre las películas, personajes, especies, lugares y vehículos del famoso estudio de animación japonés.</p>
+          </div>
+        </div>
+        
+        <div class="student-info">
+          <h3>Información del Desarrollador</h3>
+          <p><strong>Nombre del Estudiante:</strong> Wilson Andres Carmona Barco</p>
+          <p><strong>GitHub:</strong> <a href="https://github.com/Bakup11">@Bakup11</a></p>
+          <p><strong>Versión:</strong> V.1.0.0</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Asignar el HTML al contenedor
+  infoSection.innerHTML = infoHTML;
+}
 
   // Devuelve la imagen correspondiente a cada tipo de entidad
   function getImage(type, item) {
