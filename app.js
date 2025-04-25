@@ -1,5 +1,7 @@
 // Espera a que el DOM esté completamente cargado antes de ejecutar el script
 window.addEventListener("DOMContentLoaded", () => {
+  // Configurar el almacenamiento mejorado
+  setupStorage();
 
   // Sección activa por defecto
   let currentTab = "films";
@@ -100,37 +102,37 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   // Función para cargar la sección de información
-function loadInfoSection() {
-  const infoSection = document.getElementById("info-section");
-  
-  // Crear la estructura del contenido
-  const infoHTML = `
-    <div class="info-container">
-      <h2>Información</h2>
-      <div class="info-content">
-        <div class="api-info">
-          <h3>Studio Ghibli API</h3>
-          <div class="info-logo">
-            <img src="IMG/studio-ghibli-seeklogo.png" alt="Logo Studio Ghibli" class="ghibli-logo">
+  function loadInfoSection() {
+    const infoSection = document.getElementById("info-section");
+    
+    // Crear la estructura del contenido
+    const infoHTML = `
+      <div class="info-container">
+        <h2>Información</h2>
+        <div class="info-content">
+          <div class="api-info">
+            <h3>Studio Ghibli API</h3>
+            <div class="info-logo">
+              <img src="IMG/studio-ghibli-seeklogo.png" alt="Logo Studio Ghibli" class="ghibli-logo">
+            </div>
+            <div class="info-description">
+              <p>Esta aplicación utiliza la API de Studio Ghibli, que proporciona acceso a información sobre las películas, personajes, especies, lugares y vehículos del famoso estudio de animación japonés.</p>
+            </div>
           </div>
-          <div class="info-description">
-            <p>Esta aplicación utiliza la API de Studio Ghibli, que proporciona acceso a información sobre las películas, personajes, especies, lugares y vehículos del famoso estudio de animación japonés.</p>
+          
+          <div class="student-info">
+            <h3>Información del Desarrollador</h3>
+            <p><strong>Nombre del Estudiante:</strong> Wilson Andres Carmona Barco</p>
+            <p><strong>GitHub:</strong> <a href="https://github.com/Bakup11">@Bakup11</a></p>
+            <p><strong>Versión:</strong> V.1.0.0</p>
           </div>
-        </div>
-        
-        <div class="student-info">
-          <h3>Información del Desarrollador</h3>
-          <p><strong>Nombre del Estudiante:</strong> Wilson Andres Carmona Barco</p>
-          <p><strong>GitHub:</strong> <a href="https://github.com/Bakup11">@Bakup11</a></p>
-          <p><strong>Versión:</strong> V.1.0.0</p>
         </div>
       </div>
-    </div>
-  `;
-  
-  // Asignar el HTML al contenedor
-  infoSection.innerHTML = infoHTML;
-}
+    `;
+    
+    // Asignar el HTML al contenedor
+    infoSection.innerHTML = infoHTML;
+  }
 
   // Devuelve la imagen correspondiente a cada tipo de entidad
   function getImage(type, item) {
@@ -167,32 +169,39 @@ function loadInfoSection() {
     });
   }
 
-  // Muestra los favoritos guardados en localStorage
+  // Muestra los favoritos guardados
   window.showFavorites = function() {
-    const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-    content.innerHTML = "";
-
-    document.getElementById("home-section").classList.remove("hidden");
-    document.getElementById("trivia-section").classList.add("hidden");
-    document.getElementById("registration-section").classList.add("hidden");
-    document.getElementById("info-section").classList.add("hidden");
-
-    if (favoritos.length === 0) {
-      content.innerHTML = "<p>No tienes favoritos aún.</p>";
-      return;
+    try {
+      const favoritosString = window.appStorage.getItem("favoritos") || "[]";
+      const favoritos = JSON.parse(favoritosString);
+      
+      content.innerHTML = "";
+  
+      document.getElementById("home-section").classList.remove("hidden");
+      document.getElementById("trivia-section").classList.add("hidden");
+      document.getElementById("registration-section").classList.add("hidden");
+      document.getElementById("info-section").classList.add("hidden");
+  
+      if (favoritos.length === 0) {
+        content.innerHTML = "<p>No tienes favoritos aún.</p>";
+        return;
+      }
+  
+      favoritos.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <strong>${item.title || item.name}</strong><br>
+          <img src="${getImage(item.type, item)}" alt="${item.title || item.name}" class="ghibli-image" />
+          <p>${item.description || item.gender || item.eye_color || item.classification || item.terrain || item.vehicle_class || "Sin descripción disponible."}</p>
+          <button class="remove-favorite-btn" data-id="${item.id}" data-type="${item.type}">❌ Quitar</button>
+        `;
+        content.appendChild(div);
+      });
+    } catch (error) {
+      console.error("Error al mostrar favoritos:", error);
+      content.innerHTML = "<p>Error al cargar favoritos.</p>";
     }
-
-    favoritos.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "card";
-      div.innerHTML = `
-        <strong>${item.title || item.name}</strong><br>
-        <img src="${getImage(item.type, item)}" alt="${item.title || item.name}" class="ghibli-image" />
-        <p>${item.description || item.gender || item.eye_color || item.classification || item.terrain || item.vehicle_class || "Sin descripción disponible."}</p>
-        <button class="remove-favorite-btn" data-id="${item.id}" data-type="${item.type}">❌ Quitar</button>
-      `;
-      content.appendChild(div);
-    });
   };
 
   // Maneja clicks en los botones de favoritos dentro del contenedor
@@ -201,21 +210,42 @@ function loadInfoSection() {
       const id = e.target.dataset.id;
       const type = e.target.dataset.type;
       const item = allData[type].find(i => i.id === id);
-      const favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-
-      if (!favoritos.some(fav => fav.id === id)) {
-        favoritos.push({ ...item, type });
-        localStorage.setItem("favoritos", JSON.stringify(favoritos));
-        alert("Agregado a favoritos");
+      
+      try {
+        // Obtener favoritos existentes usando nuestro método personalizado
+        const favoritosString = window.appStorage.getItem("favoritos") || "[]";
+        const favoritos = JSON.parse(favoritosString);
+        
+        if (!favoritos.some(fav => fav.id === id)) {
+          favoritos.push({ ...item, type });
+          // Guardar usando nuestro método personalizado
+          window.appStorage.setItem("favoritos", JSON.stringify(favoritos));
+          alert("Agregado a favoritos");
+        }
+      } catch (error) {
+        console.error("Error al procesar favorito:", error);
+        alert("No se pudo agregar a favoritos");
       }
     }
 
     if (e.target.classList.contains("remove-favorite-btn")) {
       const id = e.target.dataset.id;
-      let favoritos = JSON.parse(localStorage.getItem("favoritos")) || [];
-      favoritos = favoritos.filter(fav => fav.id !== id);
-      localStorage.setItem("favoritos", JSON.stringify(favoritos));
-      showFavorites();
+      try {
+        // Obtener favoritos existentes
+        const favoritosString = window.appStorage.getItem("favoritos") || "[]";
+        let favoritos = JSON.parse(favoritosString);
+        
+        // Filtrar el favorito a eliminar
+        favoritos = favoritos.filter(fav => fav.id !== id);
+        
+        // Guardar la nueva lista
+        window.appStorage.setItem("favoritos", JSON.stringify(favoritos));
+        
+        // Actualizar la vista
+        showFavorites();
+      } catch (error) {
+        console.error("Error al eliminar favorito:", error);
+      }
     }
   });
 
@@ -245,3 +275,107 @@ function loadInfoSection() {
   // Carga la sección inicial al entrar
   navigateTo("home");
 });
+
+// Sistema de almacenamiento mejorado para compatibilidad WebView
+function setupStorage() {
+  // Verificar si estamos en Android WebView
+  const isAndroidWebView = /wv/.test(navigator.userAgent) || 
+                          /Android/.test(navigator.userAgent);
+  
+  // Objeto para almacenamiento en memoria cuando todo falla
+  const memoryStorage = {};
+  
+  window.appStorage = {
+    setItem: function(key, value) {
+      try {
+        // Intentar usar localStorage
+        localStorage.setItem(key, value);
+        // También intentar guardar en sessionStorage como respaldo
+        sessionStorage.setItem(key, value);
+        // También guardar en memoria
+        memoryStorage[key] = value;
+        return true;
+      } catch (e) {
+        console.error("Error al guardar datos:", e);
+        // Si falla, al menos guardamos en memoria
+        memoryStorage[key] = value;
+        return true;
+      }
+    },
+    
+    getItem: function(key) {
+      try {
+        // Intentar desde localStorage primero
+        let data = localStorage.getItem(key);
+        // Si no existe, intentar desde sessionStorage
+        if (!data) {
+          data = sessionStorage.getItem(key);
+        }
+        // Si aún no existe, intentar desde memoria
+        if (!data && memoryStorage[key]) {
+          data = memoryStorage[key];
+        }
+        return data;
+      } catch (e) {
+        console.error("Error al recuperar datos:", e);
+        // Si falla, intentar desde memoria
+        return memoryStorage[key] || null;
+      }
+    },
+    
+    removeItem: function(key) {
+      try {
+        localStorage.removeItem(key);
+        sessionStorage.removeItem(key);
+        delete memoryStorage[key];
+        return true;
+      } catch (e) {
+        console.error("Error al eliminar datos:", e);
+        // Al menos eliminamos de memoria
+        delete memoryStorage[key];
+        return true;
+      }
+    }
+  };
+  
+  // Si estamos en Android WebView, intentar mejorar la persistencia
+  if (isAndroidWebView) {
+    console.log("Detectado Android WebView - Configurando almacenamiento mejorado");
+    
+    // Cargar desde localStorage al iniciar
+    try {
+      const savedFavorites = localStorage.getItem("favoritos");
+      if (savedFavorites) {
+        memoryStorage["favoritos"] = savedFavorites;
+      }
+    } catch (e) {
+      console.error("Error al inicializar almacenamiento:", e);
+    }
+    
+    // Intentar guardar periódicamente
+    setInterval(function() {
+      try {
+        if (memoryStorage["favoritos"]) {
+          localStorage.setItem("favoritos", memoryStorage["favoritos"]);
+          console.log("Guardado periódico completado");
+        }
+      } catch (e) {
+        console.error("Error en guardado periódico:", e);
+      }
+    }, 30000); // Cada 30 segundos
+    
+    // Intentar guardar cuando la aplicación se pone en segundo plano
+    document.addEventListener("visibilitychange", function() {
+      if (document.visibilityState === "hidden") {
+        try {
+          if (memoryStorage["favoritos"]) {
+            localStorage.setItem("favoritos", memoryStorage["favoritos"]);
+            console.log("Guardado en segundo plano");
+          }
+        } catch (e) {
+          console.error("Error al guardar en segundo plano:", e);
+        }
+      }
+    });
+  }
+}
