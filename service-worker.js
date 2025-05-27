@@ -6,21 +6,15 @@ const CACHE_NAME = 'ghibli-pwa-cache-v1.0.1'; // Versión actualizada
 // Lista de archivos estáticos que se cachearán durante la instalación del Service Worker.
 // Asegúrate de incluir todos los recursos esenciales para que tu app funcione offline.
 const urlsToCache = [
-  '/', // La raíz de tu aplicación
-  '/index.html',
-  '/styles.css',
-  '/app.js',
-  '/trivia.js',
-  '/manifest.json',
-  // Añade aquí todas las imágenes, fuentes y otros archivos estáticos que uses
-  '/IMG/studio-ghibli-seeklogo.png',//, // Tu logo de Ghibli
-  '/IMG/2151068379.jpg' // Imagen de fondo para la sección de información
-  // Considera añadir las imágenes por defecto de getImage() si no son de la API
-  // 'https://static.wikia.nocookie.net/studio-ghibli/images/8/89/Ponyo.png',
-  // 'https://static.wikia.nocookie.net/studio-ghibli/images/f/f9/Race_default.png',
-  // 'https://static.wikia.nocookie.net/studio-ghibli/images/6/6d/Location_default.png',
-  // 'https://static.wikia.nocookie.net/studio-ghibli/images/8/8e/Vehicle_default.png',
-  // 'https://via.placeholder.com/150' // Placeholder genérico
+  '/Api-estudio-Ghibli/', // Si la raíz de tu app es el directorio del repositorio
+  '/Api-estudio-Ghibli/index.html',
+  '/Api-estudio-Ghibli/styles.css',
+  '/Api-estudio-Ghibli/app.js',
+  '/Api-estudio-Ghibli/trivia.js',
+  '/Api-estudio-Ghibli/manifest.json',
+  '/Api-estudio-Ghibli/IMG/studio-ghibli-seeklogo.png',
+  '/Api-estudio-Ghibli/IMG/2151068379.jpg'
+  // Asegúrate de revisar TODAS las rutas aquí, incluyendo cualquier otra imagen, fuente, etc.
 ];
 
 // URLs de la API de Studio Ghibli que queremos cachear.
