@@ -1,0 +1,26 @@
+{
+  "name": "API Studio Ghibli",
+  "short_name": "Ghibli",
+  "description": "Explora el maravilloso mundo de las películas, personajes y más de Studio Ghibli. Acceso offline y rápido a tu contenido favorito.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#f4f4f4",
+  "theme_color": "#355c7d",
+  "icons": [
+    {
+      "src": "IMG/logo_Ghibli.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "IMG/logo_Ghibli.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "IMG/Splash_Ghibli.jpg",
+      "sizes": "1080x1080",
+      "type": "image/jpg"
+    }
+  ]
+}
