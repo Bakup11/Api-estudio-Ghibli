@@ -19,14 +19,14 @@ window.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("search-input");
   const content = document.getElementById("content");
 
-  // Proxy para evitar errores CORS
-  const proxy = "https://api.allorigins.win/raw?url=";
+  // *** CAMBIO CLAVE AQUÍ: Usar el proxy de CodeTabs que parece funcionar ***
+  const proxy = "https://api.codetabs.com/v1/proxy?quest="; 
 
-  // Prueba inicial de llamada a la API (sólo para consola) para evitar errores de CORS
-  fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error al cargar datos:', error));
+  // Eliminar la prueba inicial redundante o mantenerla solo para depuración
+  // fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
+  //   .then(response => response.json())
+  //   .then(data => console.log(data))
+  //   .catch(error => console.error('Error al cargar datos:', error));
 
   // Función para navegar entre secciones
   window.navigateTo = function(section) {
@@ -79,7 +79,8 @@ window.addEventListener("DOMContentLoaded", () => {
   // Carga los datos de una categoría específica desde la API
   window.loadData = async function(endpoint) {
     currentTab = endpoint;
-    const url = `${proxy}https://ghibliapi.vercel.app/${endpoint}`;
+    // *** LA URL AHORA SE CONSTRUYE CORRECTAMENTE CON EL PROXY DE CodeTabs ***
+    const url = `${proxy}https://ghibliapi.vercel.app/${endpoint}`; 
 
     try {
       const response = await fetch(url);
@@ -100,6 +101,8 @@ window.addEventListener("DOMContentLoaded", () => {
       content.innerHTML = `<p style="color: red;">Error al cargar los datos: ${error.message}</p>`;
     }
   };
+
+  // ... (el resto de tu código es igual)
 
   // Función para cargar la sección de información
   function loadInfoSection() {
@@ -277,7 +280,10 @@ window.addEventListener("DOMContentLoaded", () => {
   // Registra el Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/Api-estudio-Ghibli/service-worker.js')
+      // *** REVISAR ESTA RUTA EN service-worker.js SI TU PWA ESTÁ EN LA RAÍZ DEL HOST ***
+      // Si tu PWA está en https://bakup11.github.io/ y no en una subcarpeta Api-estudio-Ghibli,
+      // esta ruta DEBERÍA SER '/service-worker.js' o './service-worker.js'
+      navigator.serviceWorker.register('/service-worker.js') 
         .then((registration) => {
           console.log('Service Worker registrado con éxito:', registration.scope);
         })
@@ -292,7 +298,7 @@ window.addEventListener("DOMContentLoaded", () => {
 function setupStorage() {
   // Verificar si estamos en Android WebView
   const isAndroidWebView = /wv/.test(navigator.userAgent) || 
-                          /Android/.test(navigator.userAgent);
+                           /Android/.test(navigator.userAgent);
   
   // Objeto para almacenamiento en memoria cuando todo falla
   const memoryStorage = {};
