@@ -2,7 +2,7 @@
   "name": "API Studio Ghibli",
   "short_name": "Ghibli",
   "description": "Explora el maravilloso mundo de las películas, personajes y más de Studio Ghibli. Acceso offline y rápido a tu contenido favorito.",
-  "start_url": "/index.html",
+  "start_url": "/Api-estudio-Ghibli/index.html",
   "display": "standalone",
   "background_color": "#f4f4f4",
   "theme_color": "#355c7d",
