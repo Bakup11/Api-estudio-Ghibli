@@ -6,25 +6,25 @@ const CACHE_NAME = 'ghibli-pwa-cache-v1.0.1'; // Versión actualizada
 // Lista de archivos estáticos que se cachearán durante la instalación del Service Worker.
 // Asegúrate de incluir todos los recursos esenciales para que tu app funcione offline.
 const urlsToCache = [
-  '/', // Si la raíz de tu app es el directorio del repositorio
-  '/index.html',
-  '/styles.css',
-  '/app.js',
-  '/trivia.js',
-  '/manifest.json',
-  '/IMG/studio-ghibli-seeklogo.png',
-  '/IMG/2151068379.jpg'
-  // Asegúrate de revisar TODAS las rutas aquí, incluyendo cualquier otra imagen, fuente, etc.
+  './', // Representa index.html en la ruta base actual (ej. /Api-estudio-Ghibli/ o /)
+  './index.html',
+  './styles.css',
+  './app.js',
+  './trivia.js',
+  './manifest.json',
+  './IMG/studio-ghibli-seeklogo.png',
+  './IMG/2151068379.jpg',
+  './IMG/favicon.png' // Asegúrate de añadir el favicon aquí también si quieres que se cachee
 ];
 
 // URLs de la API de Studio Ghibli que queremos cachear.
 // Usamos un proxy, así que la URL real que llega al Service Worker será la del proxy.
 const API_URLS_TO_CACHE = [
-  'https://api.allorigins.win/raw?url=https://ghibliapi.vercel.app/films',
-  'https://api.allorigins.win/raw?url=https://ghibliapi.vercel.app/people',
-  'https://api.allorigins.win/raw?url=https://ghibliapi.vercel.app/species',
-  'https://api.allorigins.win/raw?url=https://ghibliapi.vercel.app/locations',
-  'https://api.allorigins.win/raw?url=https://ghibliapi.vercel.app/vehicles'
+    'https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films',
+    'https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/people',
+    'https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/species',
+    'https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/locations',
+    'https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/vehicles'
 ];
 
 // Evento 'install': Se dispara cuando el Service Worker se instala por primera vez.

@@ -22,12 +22,6 @@ window.addEventListener("DOMContentLoaded", () => {
   // *** CAMBIO CLAVE AQUÍ: Usar el proxy de CodeTabs que parece funcionar ***
   const proxy = "https://api.codetabs.com/v1/proxy?quest="; 
 
-  // Eliminar la prueba inicial redundante o mantenerla solo para depuración
-  // fetch('https://api.codetabs.com/v1/proxy?quest=https://ghibliapi.vercel.app/films')
-  //   .then(response => response.json())
-  //   .then(data => console.log(data))
-  //   .catch(error => console.error('Error al cargar datos:', error));
-
   // Función para navegar entre secciones
   window.navigateTo = function(section) {
     console.log("Navegando a:", section);
@@ -101,8 +95,6 @@ window.addEventListener("DOMContentLoaded", () => {
       content.innerHTML = `<p style="color: red;">Error al cargar los datos: ${error.message}</p>`;
     }
   };
-
-  // ... (el resto de tu código es igual)
 
   // Función para cargar la sección de información
   function loadInfoSection() {
@@ -277,21 +269,28 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Carga la sección inicial al entrar
   navigateTo("home");
-  // Registra el Service Worker
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      // *** REVISAR ESTA RUTA EN service-worker.js SI TU PWA ESTÁ EN LA RAÍZ DEL HOST ***
-      // Si tu PWA está en https://bakup11.github.io/ y no en una subcarpeta Api-estudio-Ghibli,
-      // esta ruta DEBERÍA SER '/service-worker.js' o './service-worker.js'
-      navigator.serviceWorker.register('/service-worker.js') 
-        .then((registration) => {
-          console.log('Service Worker registrado con éxito:', registration.scope);
-        })
-        .catch((error) => {
-          console.error('Fallo el registro del Service Worker:', error);
-        });
-    });
-  }
+// Registra el Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    // Para GitHub Project Pages, la base es /nombre-del-repositorio/
+    // Asegúrate de que el script del Service Worker también esté en la raíz del repositorio.
+    // La ruta de registro debe ser relativa al dominio base del proyecto.
+    // Obtenemos la ruta base actual (ej. /Api-estudio-Ghibli/ o /)
+    const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+    // Construimos la ruta completa al Service Worker
+    const serviceWorkerPath = `${basePath}/service-worker.js`;
+    // El alcance del Service Worker
+    const serviceWorkerScope = `${basePath}/`;
+
+    navigator.serviceWorker.register(serviceWorkerPath, { scope: serviceWorkerScope }) // Especifica el alcance explícitamente
+      .then((registration) => {
+        console.log('Service Worker registrado con éxito:', registration.scope);
+      })
+      .catch((error) => {
+        console.error('Fallo el registro del Service Worker:', error);
+      });
+  });
+}
 });
 
 // Sistema de almacenamiento mejorado para compatibilidad WebView
